@@ -56,6 +56,34 @@ class CompilerTests(unittest.TestCase):
         self.assertIn("AuthenticationRequired", result.python)
         self.assertIn("FastAPIApplication", result.python)
 
+    def test_sum_numbers_generator_executes_real_logic(self):
+        source = """
+Lakshya:
+    SumNumbers
+
+Dravya:
+    numbers
+
+Bandhana:
+    AccuracyRequired
+    NumericInputOnly
+
+Pramana:
+    UnitTests
+
+Phala:
+    total
+"""
+        result = compile_source(source)
+        namespace = {}
+
+        exec(result.python, namespace)
+        execution = namespace["sum_numbers"](numbers=[1, 2, 3, 4])
+
+        self.assertEqual(namespace["GENERATOR_KIND"], "sum_numbers")
+        self.assertEqual(execution.outputs, {"total": 10})
+        self.assertEqual(execution.verification_required, ("UnitTests",))
+
     def test_render_tree_mentions_relations(self):
         result = compile_source(SOURCE)
         tree = result.graph.render_tree()

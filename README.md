@@ -62,6 +62,26 @@ The project deliberately separates the language into three layers:
 
 The MVP is intentionally small. It proves the language pipeline before adding advanced synthesis, solver-backed planning, formal verification, or multi-agent runtimes.
 
+## Use it now
+
+Start with the runnable `SumNumbers` example:
+
+```bash
+python -m manas_sutra inspect examples/sum_numbers.msutra
+python -m manas_sutra compile examples/sum_numbers.msutra --out generated/sum_numbers.py --graph-json generated/sum_numbers.graph.json --show-tree
+```
+
+Then run the generated function:
+
+```bash
+python - <<'PY'
+from generated.sum_numbers import sum_numbers
+print(sum_numbers(numbers=[1, 2, 3, 4, 5]).outputs)
+PY
+```
+
+See `docs/quickstart.md` for the complete walkthrough.
+
 ## Development
 
 Run tests with:

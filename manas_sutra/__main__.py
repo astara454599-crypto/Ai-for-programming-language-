@@ -24,6 +24,11 @@ def main() -> int:
         "--show-tree", action="store_true", help="Print a readable semantic tree."
     )
 
+    inspect_parser = subparsers.add_parser(
+        "inspect", help="Print canonical JSON and semantic tree for a .msutra file."
+    )
+    inspect_parser.add_argument("source", type=Path)
+
     args = parser.parse_args()
 
     try:
@@ -32,6 +37,12 @@ def main() -> int:
     except (OSError, ParseError) as exc:
         parser.error(str(exc))
         return 2
+
+    if args.command == "inspect":
+        print(json.dumps(result.program.to_dict(), indent=2))
+        print()
+        print(result.graph.render_tree())
+        return 0
 
     if args.out:
         args.out.parent.mkdir(parents=True, exist_ok=True)
