@@ -1,10 +1,10 @@
-"""Semantic graph representation for Manas-Sutra programs."""
+"""Semantic graph representation for Manas-Sutra/SUTRA-AI programs."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 
-from .parser import ManasProgram
+from .parser import ManasProgram, SUTRA_LAYER_CONTEXT
 
 
 @dataclass(frozen=True)
@@ -23,8 +23,12 @@ class GraphEdge:
 
 @dataclass(frozen=True)
 class SemanticGraph:
+    """Jala layer: a typed goal-centered semantic graph."""
+
     nodes: tuple[GraphNode, ...]
     edges: tuple[GraphEdge, ...]
+    dialect: str = "manas-sutra-v0.1"
+    layers: dict[str, str] | None = None
 
     @classmethod
     def from_program(cls, program: ManasProgram) -> "SemanticGraph":
@@ -36,6 +40,8 @@ class SemanticGraph:
         section_map = {
             "inputs": (program.inputs, "input", "uses"),
             "constraints": (program.constraints, "constraint", "constrained_by"),
+            "knowledge": (program.knowledge, "knowledge", "grounded_by"),
+            "search": (program.search, "search", "searched_by"),
             "verification": (program.verification, "verification", "verified_by"),
             "outputs": (program.outputs, "output", "produces"),
             "memory": (program.memory, "memory", "remembers"),
@@ -49,12 +55,20 @@ class SemanticGraph:
                 nodes.append(GraphNode(node_id, kind, item))
                 edges.append(GraphEdge("goal:0", relation, node_id))
 
-        return cls(tuple(nodes), tuple(edges))
+        return cls(
+            nodes=tuple(nodes),
+            edges=tuple(edges),
+            dialect=program.dialect,
+            layers=dict(SUTRA_LAYER_CONTEXT),
+        )
 
     def to_dict(self) -> dict[str, object]:
-        """Return a JSON-serializable graph."""
+        """Return a JSON-serializable Jala graph."""
 
         return {
+            "protocol": "SUTRA-AI",
+            "dialect": self.dialect,
+            "layers": self.layers or {},
             "nodes": [node.__dict__ for node in self.nodes],
             "edges": [edge.__dict__ for edge in self.edges],
         }
@@ -64,7 +78,7 @@ class SemanticGraph:
 
         goal = next(node for node in self.nodes if node.id == "goal:0")
         labels_by_id = {node.id: node for node in self.nodes}
-        lines = [f"Goal: {goal.label}"]
+        lines = [f"Goal: {goal.label}", f"Dialect: {self.dialect}"]
         for edge in self.edges:
             node = labels_by_id[edge.target]
             lines.append(f" ├─ {node.kind}: {node.label} [{edge.relation}]")

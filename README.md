@@ -1,11 +1,11 @@
 # Manas-Sutra
 
-Manas-Sutra is an experimental AI-native programming protocol prototype. It is not meant to replace Python, Rust, or JavaScript. Instead, it starts with a compact intent language that describes goals, inputs, constraints, verification needs, and desired outputs, then converts that intent into a typed semantic graph and starter executable code.
+Manas-Sutra / SUTRA-AI is an experimental AI-native cognitive computation protocol prototype. It is not meant to replace Python, Rust, or JavaScript. Instead, it starts with a compact intent language that describes goals, inputs, constraints, verification needs, and desired outputs, then converts that intent into a typed semantic graph and starter executable code.
 
 This repository contains the first MVP:
 
 - a Sanskrit-inspired human inspection layer;
-- a deterministic parser for `.msutra` files;
+- a deterministic parser for `.msutra` files and formal `.sutra` TATVA contracts;
 - a canonical semantic graph representation;
 - a small Python code generator for data/API oriented tasks;
 - tests and examples that demonstrate the full flow.
@@ -64,23 +64,23 @@ The MVP is intentionally small. It proves the language pipeline before adding ad
 
 ## Use it now
 
-Start with the runnable `SumNumbers` example:
+Start with the runnable `SumNumbers` example in either legacy Manas-Sutra or formal SUTRA-AI syntax:
 
 ```bash
-python -m manas_sutra inspect examples/sum_numbers.msutra
-python -m manas_sutra compile examples/sum_numbers.msutra --out generated/sum_numbers.py --graph-json generated/sum_numbers.graph.json --show-tree
+python -m manas_sutra inspect examples/sutra_sum.sutra
+python -m manas_sutra compile examples/sutra_sum.sutra --out generated/sutra_sum.py --graph-json generated/sutra_sum.graph.json --show-tree
 ```
 
 Then run the generated function:
 
 ```bash
 python - <<'PY'
-from generated.sum_numbers import sum_numbers
+from generated.sutra_sum import sum_numbers
 print(sum_numbers(numbers=[1, 2, 3, 4, 5]).outputs)
 PY
 ```
 
-See `docs/quickstart.md` for the complete walkthrough.
+See `docs/quickstart.md` for the walkthrough and `docs/sutra-ai-formal-design.md` for the formal design.
 
 ## Development
 
