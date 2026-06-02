@@ -1,0 +1,18 @@
+Lakshya:
+    CreateTodoAPI
+
+Dravya:
+    User
+    Task
+
+Bandhana:
+    AuthenticationRequired
+    StoreDataInDatabase
+    UserCanOnlyAccessOwnTasks
+
+Pramana:
+    UnitTests
+    SecurityReview
+
+Phala:
+    FastAPIApplication

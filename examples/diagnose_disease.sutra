@@ -1,0 +1,79 @@
+◈ TATVA [DiagnoseDisease] {
+  AGAMA {
+    lakshana: Stream<Symptom>
+    itihaas: Record<MedicalHistory>
+    pariksha: Dataset<LabResult>
+    chitr: Optional<MedicalImage>
+  }
+
+  BANDHANA {
+    ahimsa: ENFORCE(harm_probability ≤ 0.0001)
+    vishwas: REQUIRE(posterior_confidence ≥ 0.95)
+    vyakhya: MANDATE(causal_explanation = true)
+    gupta: ENFORCE(privacy_standard = HIPAA)
+    kaal: BOUND(inference_latency ≤ 2000ms)
+    dava: PREFER(avoid(drug_interaction_risk))
+  }
+
+  JNANA {
+    ontology: MedicalOntology<ICD-11 v4.2>
+    interactions: DrugInteractionGraph<WHO-2024>
+    evidence: EvidenceBase<PubMed, weight=0.9>
+    causal_model: CausalModel<DiseaseProgression>
+  }
+
+  ANVESHANA {
+    vidhaan: Bayesian ⊗ CausalReasoning ⊗ DifferentialDiagnosis
+    gambhirata: MAX
+    vyaapar: MINIMIZE(false_negative_rate)
+    vivechana: REQUIRED
+  }
+
+  PRAMAN {
+    prakar: FormalVerification ⊗ ClinicalGuidelineCheck
+    maapdand: ISO-13485, FDA-21CFR-820
+    lekha: MANDATORY
+    Byzantine: REQUIRE(consensus_agents ≥ 3)
+  }
+
+  SAMVAD {
+    AGENT NidanAI { bhumika: Diagnosis, pramanik: ≥ 0.95 }
+    AGENT VisheshAI { bhumika: Specialist, pramanik: ≥ 0.95 }
+    AGENT JaanchAI { bhumika: Verifier, pramanik: ≥ 0.99 }
+    nirnaya: Byzantine.Consensus(k=3, n=3)
+    apavad: ESCALATE_TO_HUMAN_PHYSICIAN
+  }
+
+  SMRITI {
+    prasang: Temporal<CaseHistory, sliding="30days">
+    gyan: Knowledge<MedicalOntology, versioned=true, validated=true>
+    vidhi: Evidence<DiagnosticStrategy, confidence_weighted=true>
+    vartamaan: Goal<CurrentDiagnosis> ⊗ Constraint<*>
+    REDACT: apply_dp(episodic, ε=0.1, δ=10^-5)
+  }
+
+  VIKASA {
+    KSHETRA_ANUMATI {
+      ALLOWED: grammar.surface_extensions
+      ALLOWED: optimization.search_heuristics
+      ALLOWED: knowledge.domain_registrations
+    }
+    NITYA_PRATIBANDH {
+      FORBIDDEN: core_constraints.*
+      FORBIDDEN: proof_requirements.*
+      FORBIDDEN: human_override.*
+    }
+    PRAMAN_AVASHYAK {
+      lean4_proof: REQUIRE(machine_checkable_proof = true)
+      rollback: REQUIRE(100_percent_reversible = true)
+    }
+  }
+
+  PHALA {
+    nidan: Proof<Diagnosis<Verified>, "ISO-13485">
+    upchar: Evidence<TreatmentPlan, 0.95> ⊗ Proof<DrugSafe, "FDA">
+    asanishchit: Uncertain<Prognosis, σ=0.08>
+    vivaran: Causal<Symptoms → Diagnosis, γ>
+    lekha: Temporal<AuditTrail, "7years">
+  }
+}
